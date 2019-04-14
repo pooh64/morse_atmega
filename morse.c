@@ -13,33 +13,33 @@ static inline void clr_bit(uint8_t *p, uint8_t num) {
 static inline void morse_flush_error(struct morse_decoder *dec)
 {
 	dec->morse.buf = 0;
-	dec->morse.buf_len = 0;
+	dec->morse.len = 0;
 	dec->symbol = '@';
 }
 
 static inline void morse_flush_space(struct morse_decoder *dec)
 {
 	dec->morse.buf = 0;
-	dec->morse.buf_len = 0;
+	dec->morse.len = 0;
 	dec->symbol = '_';
 }
 
 void morse_flush_units(struct morse_decoder *dec)
 {
 	uint8_t result;
-	uint8_t buf = dec->morse.buf;
-	uint8_t len = dec->morse.len;
+	/* Magic trick */
+	uint8_t code = dec->morse.buf | dec->morse.len;
 	dec->morse.buf = 0;
 	dec->morse.len = 0;
 
-	switch (buf) {
+	switch (code) {
 	#define MORSE_SYMBOL_CODE(code_mask, len_mask, symbol)	\
 	case ((uint8_t) code_mask) | ((uint8_t) len_mask): 	\
 		result = symbol; 				\
 		break;
 	#include "morse_symbols.h"
 	#undef MORSE_SYMBOL_CODE
-	defalut:
+	default:
 		result = '@';
 	}
 
@@ -49,19 +49,17 @@ void morse_flush_units(struct morse_decoder *dec)
 
 void morse_flush_signal(struct morse_decoder *dec)
 {
-	if (state == STATE_ON) {
-		if (dec->sig.stable_len <  MORSE_DASH_MIN) {
-			/* clr_bit(&dec->morse.buf, dec->morse.buf_len++); */
-			/* Just set buf to 0 by default */
-		} else if (dec->sig.stable_len <= MORSE_DASH_MAX) {
-			set_bit(&dec->morse.buf, 8 - dec->morse.buf_len++);
-		} else
+	if (dec->sig.state == STATE_ON) {
+		if (dec->sig.stable_len < MORSE_DASH_MIN)
+			; /* Just set buf to 0 by default */
+		else if (dec->sig.stable_len <= MORSE_DASH_MAX)
+			set_bit(&dec->morse.buf, 8 - dec->morse.len++);
+		else
 			morse_flush_error(dec);
-		}
 	} else {
-		if (len < MORSE_SYMB_SPACE_MIN)
+		if (dec->sig.stable_len < MORSE_SYMB_SPACE_MIN)
 			; /* Just space between units */
-		else if (len < MORSE_SYMB_SPACE_MAX)
+		else if (dec->sig.stable_len < MORSE_SYMB_SPACE_MAX)
 			morse_flush_units(dec);
 		else	/* It's space between words */
 			morse_flush_space(dec);

@@ -1,6 +1,8 @@
 #ifndef MORSE_H_
 #define MORSE_H_
 
+#include <stdint.h>
+
 typedef enum state_type {
 	STATE_NO_VALUE = 0,
 	STATE_OFF,
@@ -45,7 +47,7 @@ struct morse_decoder {
 
 	struct unit_buffer {
 		uint8_t buf;
-		uint8_t buf_len;
+		uint8_t len;
 	} morse;
 
 	uint8_t symbol;

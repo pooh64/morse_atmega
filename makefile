@@ -17,7 +17,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 
-MAIN_SRC := main.c
+MAIN_SRC := main.c morse.c timer_event.c
 MAIN_OBJ := $(addprefix $(BUILD_DIR)/,$(MAIN_SRC:.c=.o))
 .PHONY: main
 main: $(BUILD_DIR)/main
