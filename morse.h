@@ -24,6 +24,7 @@ typedef enum state_type {
  * ++[-------]++ => space
 */
 
+/* Lenghts measured in timer ticks */
 #define SIGNAL_MIN_STABLE_LEN 2
 #define MORSE_DOT_LEN 5
 
@@ -54,6 +55,8 @@ struct morse_decoder {
 	uint8_t sym;
 	uint8_t sym_matrix[7];
 };
+
+void morse_flush_units(struct morse_decoder *dec);
 
 void morse_get_sym_matrix(struct morse_decoder *dec);
 void morse_draw_sym_matrix(struct morse_decoder *dec);

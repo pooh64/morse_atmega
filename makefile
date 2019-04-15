@@ -4,7 +4,7 @@ LDFLAGS_avr :=       -mmcu=atmega8535
 
 BUILD_DIR  := build
 
-all: main utest_draw
+all: main utest_draw utest_decode
 
 -include $(BUILD_DIR)/*.d
 
@@ -34,3 +34,10 @@ UTEST_DRAW_OBJ := $(addprefix $(BUILD_DIR)/,$(UTEST_DRAW_SRC:.c=.o))
 utest_draw: $(BUILD_DIR)/utest_draw.hex
 $(BUILD_DIR)/utest_draw.elf: $(UTEST_DRAW_OBJ)
 	$(CC_avr) $(LDFLAGS_avr) $(UTEST_DRAW_OBJ) -o $@
+
+UTEST_DECODE_SRC := utest_decode.c morse.c
+UTEST_DECODE_OBJ := $(addprefix $(BUILD_DIR)/,$(UTEST_DECODE_SRC:.c=.o))
+.PHONY: utest_decode
+utest_decode: $(BUILD_DIR)/utest_decode.hex
+$(BUILD_DIR)/utest_decode.elf: $(UTEST_DECODE_OBJ)
+	$(CC_avr) $(LDFLAGS_avr) $(UTEST_DECODE_OBJ) -o $@
