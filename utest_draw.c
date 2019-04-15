@@ -10,9 +10,6 @@ void test_draw_cycle(struct morse_decoder *dec)
 
 int main()
 {
-	/* make struct and clean it */
-	/* prepare handler */
-
 	struct morse_decoder dec = { };
 
 	#define MORSE_SYMBOL_MATRIX(symbol, s0, s1, s2, s3, s4, s5, s6)	symbol,
@@ -22,9 +19,6 @@ int main()
 	#undef MORSE_SYMBOL_MATRIX
 
 	while (1) {
-		/* if there is new signal */
-			/* add it */
-		/* draw symbol again */
 		for (uint8_t *ptr = ready_symbols; *ptr != 0; ptr++) {
 			dec.sym = *ptr;
 			test_draw_cycle(&dec);

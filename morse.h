@@ -2,6 +2,7 @@
 #define MORSE_H_
 
 #include <stdint.h>
+#include <avr/io.h>
 
 typedef enum state_type {
 	STATE_NO_VALUE = 0,
@@ -50,8 +51,12 @@ struct morse_decoder {
 		uint8_t len;
 	} morse;
 
-	uint8_t symbol;
+	uint8_t sym;
+	uint8_t sym_matrix[7];
 };
+
+void morse_get_sym_matrix(struct morse_decoder *dec);
+void morse_draw_sym_matrix(struct morse_decoder *dec);
 
 /* Timer routine */
 volatile extern state_t timer_event_signal_state;
