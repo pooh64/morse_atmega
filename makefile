@@ -28,7 +28,7 @@ $(BUILD_DIR)/main.elf: $(MAIN_OBJ)
 	$(CC_avr) $(LDFLAGS_avr) $(MAIN_OBJ) -o $@
 
 
-UTEST_DRAW_SRC := utest_draw.c morse.c
+UTEST_DRAW_SRC := utest_draw.c led_matrix.c
 UTEST_DRAW_OBJ := $(addprefix $(BUILD_DIR)/,$(UTEST_DRAW_SRC:.c=.o))
 .PHONY: utest_draw
 utest_draw: $(BUILD_DIR)/utest_draw.hex

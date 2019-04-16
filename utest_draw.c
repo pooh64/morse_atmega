@@ -1,27 +1,20 @@
-#include "morse.h"
-
-void test_draw_cycle(struct morse_decoder *dec)
-{
-	morse_get_sym_matrix(dec);
-
-	for (uint16_t n = 128; n != 0; --n)
-		morse_draw_sym_matrix(dec);
-}
+#include "led_matrix.h"
 
 int main()
 {
-	struct morse_decoder dec = { };
+	led_matrix_t mat = { };
 
-	#define MORSE_SYMBOL_MATRIX(symbol, s0, s1, s2, s3, s4, s5, s6)	symbol,
+	#define LED_MATRIX_SYMB(symbol, s0, s1, s2, s3, s4, s5, s6)	symbol,
 	uint8_t ready_symbols[] = {
-		#include "morse_symbols.h"
+		#include "led_matrix_font.h"
 		0 };
-	#undef MORSE_SYMBOL_MATRIX
+	#undef LED_MATRIX_SYMB
 
 	while (1) {
 		for (uint8_t *ptr = ready_symbols; *ptr != 0; ptr++) {
-			dec.sym = *ptr;
-			test_draw_cycle(&dec);
+			led_matrix_set_from_symb(&mat, *ptr);
+			for (uint16_t n = 128; n != 0; --n)
+				led_matrix_draw(&mat);
 		}
 	}
 }

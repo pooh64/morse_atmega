@@ -14,7 +14,7 @@ int main()
 	struct morse_decoder dec = { };
 
 	#define MORSE_SYMBOL_CODE(symbol, code_mask, len_mask)	\
-       		code_mask | len_mask,
+		(code_mask | len_mask),
 	uint8_t ready_codes[] = {
 		#include "morse_symbols.h"
 		0 };
@@ -22,8 +22,8 @@ int main()
 
 	while (1) {
 		for (uint8_t *ptr = ready_codes; *ptr != 0; ptr++) {
-			dec.morse.buf = *ptr & (uint8_t) 0xb11111000;
-			dec.morse.len = *ptr & (uint8_t) 0xb00000111;
+			dec.morse.buf = *ptr & ((uint8_t) 0xb11111000);
+			dec.morse.len = *ptr & ((uint8_t) 0xb00000111);
 			test_decode_cycle(&dec);
 		}
 	}

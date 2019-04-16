@@ -20,10 +20,6 @@
 #define MORSE_SYMB_SPACE_MAX (MORSE_DOT_LEN * 5)
 /* between words */
 
-#define MORSE_MATRIX_ROW_REG    PORTC
-#define MORSE_MATRIX_COL_REG    PORTA
-#define MORSE_MATRIX_DRAW_DELAY 0xff
-
 #define SIGNAL_INDICATOR (PORTD && 0x80)
 
 
@@ -59,15 +55,11 @@ struct morse_decoder {
 		uint8_t len;
 	} morse;
 
-	uint8_t sym;
-	uint8_t sym_matrix[7];
+	uint8_t symb;
 };
 
 void morse_add_signal(struct morse_decoder *dec, state_t sig);
 void morse_flush_units(struct morse_decoder *dec);
-
-void morse_get_sym_matrix(struct morse_decoder *dec);
-void morse_draw_sym_matrix(struct morse_decoder *dec);
 
 /* Timer routine */
 volatile extern state_t timer_event_signal_state;
