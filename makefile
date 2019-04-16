@@ -1,10 +1,10 @@
 CC_avr      := avr-gcc
-CFLAGS_avr  := -Wall -mmcu=atmega8535 -O2 -std=c99 -g -c
+CFLAGS_avr  := -Wall -mmcu=atmega8535 -O2 -std=c99 -c
 LDFLAGS_avr :=       -mmcu=atmega8535
 
 BUILD_DIR  := build
 
-all: main utest_draw utest_decode
+all: main utest_led_matrix utest_morse
 
 -include $(BUILD_DIR)/*.d
 
@@ -28,16 +28,17 @@ $(BUILD_DIR)/main.elf: $(MAIN_OBJ)
 	$(CC_avr) $(LDFLAGS_avr) $(MAIN_OBJ) -o $@
 
 
-UTEST_DRAW_SRC := utest_draw.c led_matrix.c
-UTEST_DRAW_OBJ := $(addprefix $(BUILD_DIR)/,$(UTEST_DRAW_SRC:.c=.o))
-.PHONY: utest_draw
-utest_draw: $(BUILD_DIR)/utest_draw.hex
-$(BUILD_DIR)/utest_draw.elf: $(UTEST_DRAW_OBJ)
-	$(CC_avr) $(LDFLAGS_avr) $(UTEST_DRAW_OBJ) -o $@
+UTEST_LED_MATRIX_SRC := utest_led_matrix.c led_matrix.c
+UTEST_LED_MATRIX_OBJ := $(addprefix $(BUILD_DIR)/,$(UTEST_LED_MATRIX_SRC:.c=.o))
+.PHONY: utest_led_matrix
+utest_led_matrix: $(BUILD_DIR)/utest_led_matrix.hex
+$(BUILD_DIR)/utest_led_matrix.elf: $(UTEST_LED_MATRIX_OBJ)
+	$(CC_avr) $(LDFLAGS_avr) $(UTEST_LED_MATRIX_OBJ) -o $@
 
-UTEST_DECODE_SRC := utest_decode.c morse.c led_matrix.c
-UTEST_DECODE_OBJ := $(addprefix $(BUILD_DIR)/,$(UTEST_DECODE_SRC:.c=.o))
-.PHONY: utest_decode
-utest_decode: $(BUILD_DIR)/utest_decode.hex
-$(BUILD_DIR)/utest_decode.elf: $(UTEST_DECODE_OBJ)
-	$(CC_avr) $(LDFLAGS_avr) $(UTEST_DECODE_OBJ) -o $@
+
+UTEST_MORSE_SRC := utest_morse.c morse.c led_matrix.c
+UTEST_MORSE_OBJ := $(addprefix $(BUILD_DIR)/,$(UTEST_MORSE_SRC:.c=.o))
+.PHONY: utest_morse
+utest_morse: $(BUILD_DIR)/utest_morse.hex
+$(BUILD_DIR)/utest_morse.elf: $(UTEST_MORSE_OBJ)
+	$(CC_avr) $(LDFLAGS_avr) $(UTEST_MORSE_OBJ) -o $@
