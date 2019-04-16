@@ -1,33 +1,26 @@
 #include "morse.h"
 
-void test_draw_cycle(struct morse_decoder *dec)
-{
-	morse_get_sym_matrix(dec);
-
-	for (uint16_t n = 128; n != 0; --n)
-		morse_draw_sym_matrix(dec);
-}
-
 int main()
 {
-	/* make struct and clean it */
-	/* prepare handler */
-
+	/* Make struct and clean it */
 	struct morse_decoder dec = { };
+	dec.sym = '_';
 
-	#define MORSE_SYMBOL_MATRIX(symbol, s0, s1, s2, s3, s4, s5, s6)	symbol,
-	uint8_t ready_symbols[] = {
-		#include "morse_symbols.h"
-		0 };
-	#undef MORSE_SYMBOL_MATRIX
+	/* Prepare timer handler */
+	timer_event_enable();
 
 	while (1) {
-		/* if there is new signal */
-			/* add it */
-		/* draw symbol again */
-		for (uint8_t *ptr = ready_symbols; *ptr != 0; ptr++) {
-			dec.sym = *ptr;
-			test_draw_cycle(&dec);
+		/* If there is new signal */
+		state_t tmp_sig = timer_event_signal_state;
+		if (tmp_sig != STATE_NO_VALUE) {
+			uint8_t tmp_sym = dec.sym;
+			morse_add_signal(&dec, tmp_sig);
+			/* If there is a new symbol */
+			if (dec.sym != tmp_sym) {
+				morse_get_sym_matrix(&dec);
+			}
 		}
+		/* Redraw */
+		morse_draw_sym_matrix(&dec);
 	}
 }

@@ -4,26 +4,6 @@
 #include <stdint.h>
 #include <avr/io.h>
 
-typedef enum state_type {
-	STATE_NO_VALUE = 0,
-	STATE_OFF,
-	STATE_ON
-} state_t;
-
-/* Decoder:
- *
- * + and - have ~10 sstate_len
- *
- * [+][-][+++][-][+++][---]  Signal state buffer ([ ] => flushed)
- *  .  s   -   s   -   nxt   Unit buffer
- *
- * --[+]--       => set unit .
- * --[+++]--     => set unit -
- * ++[-]++       => nothing
- * ++[---]++     => flush unit buffer
- * ++[-------]++ => space
-*/
-
 /* Lenghts measured in timer ticks */
 #define SIGNAL_MIN_STABLE_LEN 2
 #define MORSE_DOT_LEN 5
@@ -46,6 +26,27 @@ typedef enum state_type {
 
 #define SIGNAL_INDICATOR (PORTD && 0x80)
 
+
+typedef enum state_type {
+	STATE_NO_VALUE = 0,
+	STATE_OFF,
+	STATE_ON
+} state_t;
+
+/* Decoder:
+ *
+ * + and - have ~10 sstate_len
+ *
+ * [+][-][+++][-][+++][---]  Signal state buffer ([ ] => flushed)
+ *  .  s   -   s   -   nxt   Unit buffer
+ *
+ * --[+]--       => set unit .
+ * --[+++]--     => set unit -
+ * ++[-]++       => nothing
+ * ++[---]++     => flush unit buffer
+ * ++[-------]++ => space
+*/
+
 struct morse_decoder {
 	struct signal_buffer {
 		state_t state;
@@ -62,6 +63,7 @@ struct morse_decoder {
 	uint8_t sym_matrix[7];
 };
 
+void morse_add_signal(struct morse_decoder *dec, state_t sig);
 void morse_flush_units(struct morse_decoder *dec);
 
 void morse_get_sym_matrix(struct morse_decoder *dec);

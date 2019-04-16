@@ -49,9 +49,9 @@ void morse_draw_sym_matrix(struct morse_decoder *dec)
 		MORSE_MATRIX_ROW_REG = ~((uint8_t) 1 << (i - 1));
 		MORSE_MATRIX_COL_REG = *ptr;
 		_delay_loop_1(MORSE_MATRIX_DRAW_DELAY);
+		MORSE_MATRIX_COL_REG = 0;
 	}
 
-	MORSE_MATRIX_COL_REG = 0;
 	MORSE_MATRIX_ROW_REG = 0;
 
 	/* Maybe restore DDR */
@@ -133,7 +133,7 @@ void morse_add_signal(struct morse_decoder *dec, state_t new_state)
 
 	dec->sig.noise_len++;
 
-	/* It's too long for noise, change state and flush old */
+	/* It's too long for noise, change state and flush old signal */
 	if (dec->sig.noise_len >= SIGNAL_MIN_STABLE_LEN) {
 		dec->sig.noise_len = 0;
 

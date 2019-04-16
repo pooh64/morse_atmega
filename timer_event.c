@@ -3,7 +3,12 @@
 
 volatile state_t timer_event_signal_state = STATE_NO_VALUE;
 
-ISR(TIMER2_OVF_vect, ISR_BLOCK)
+void timer_event_enable()
+{
+
+}
+
+ISR(TIMER2_OVF_vect, ISR_BLOCK) /* Timer should be defined too */
 {
 	if (SIGNAL_INDICATOR)
 		timer_event_signal_state = STATE_ON;
