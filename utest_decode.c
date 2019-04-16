@@ -22,8 +22,8 @@ int main()
 
 	while (1) {
 		for (uint8_t *ptr = ready_codes; *ptr != 0; ptr++) {
-			dec.morse.buf = *ptr & 0xb11111000;
-			dec.morse.len = *ptr & 0xb00000111;
+			dec.morse.buf = *ptr & (uint8_t) 0xb11111000;
+			dec.morse.len = *ptr & (uint8_t) 0xb00000111;
 			test_decode_cycle(&dec);
 		}
 	}
