@@ -1,12 +1,18 @@
 #include "morse.h"
+#include "led_matrix.h"
 
 void test_decode_cycle(struct morse_decoder *dec)
 {
+	led_matrix_t mat = { };
 	morse_flush_units(dec);
-	morse_get_sym_matrix(dec);
+	led_matrix_set_from_symb(&mat, dec->symb);
 
 	for (uint16_t n = 128; n != 0; --n)
-		morse_draw_sym_matrix(dec);
+		led_matrix_draw(&mat);
+	
+	led_matrix_set_from_symb(&mat, 0);
+	for (uint16_t n = 128; n != 0; --n)
+		led_matrix_draw(&mat);
 }
 
 int main()
@@ -14,16 +20,23 @@ int main()
 	struct morse_decoder dec = { };
 
 	#define MORSE_SYMBOL_CODE(symbol, code_mask, len_mask)	\
-		(code_mask | len_mask),
-	uint8_t ready_codes[] = {
+		((uint8_t) code_mask),
+	uint8_t ready_code_mask[] = {
+		#include "morse_symbols.h"
+		0 };
+	#undef MORSE_SYMBOL_CODE
+
+	#define MORSE_SYMBOL_CODE(symbol, code_mask, len_mask)	\
+		((uint8_t) len_mask),
+	uint8_t ready_len_mask[] = {
 		#include "morse_symbols.h"
 		0 };
 	#undef MORSE_SYMBOL_CODE
 
 	while (1) {
-		for (uint8_t *ptr = ready_codes; *ptr != 0; ptr++) {
-			dec.morse.buf = *ptr & ((uint8_t) 0xb11111000);
-			dec.morse.len = *ptr & ((uint8_t) 0xb00000111);
+		for (uint8_t i = 0; i < sizeof(ready_code_mask) / sizeof(uint8_t); i++) {
+			dec.morse.buf = ready_code_mask[i];
+			dec.morse.len = ready_len_mask[i];
 			test_decode_cycle(&dec);
 		}
 	}

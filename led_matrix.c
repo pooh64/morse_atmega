@@ -12,6 +12,7 @@ void led_matrix_set_from_symb(led_matrix_t *mat, uint8_t symb)
 {
 	if (symb == mat->symb) /* Cached */
 		return;
+	mat->symb = symb;
 	switch (symb) {
 	#define LED_MATRIX_SYMB(_symbol, s0, s1, s2, s3, s4, s5, s6)		\
 	case _symbol: 								\

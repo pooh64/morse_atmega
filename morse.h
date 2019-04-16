@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <avr/io.h>
+#include "state_type.h"
 
 /* Lenghts measured in timer ticks */
 #define SIGNAL_MIN_STABLE_LEN 2
@@ -19,15 +20,6 @@
 /* between symbols */
 #define MORSE_SYMB_SPACE_MAX (MORSE_DOT_LEN * 5)
 /* between words */
-
-#define SIGNAL_INDICATOR (PORTD && 0x80)
-
-
-typedef enum state_type {
-	STATE_NO_VALUE = 0,
-	STATE_OFF,
-	STATE_ON
-} state_t;
 
 /* Decoder:
  *
@@ -60,9 +52,5 @@ struct morse_decoder {
 
 void morse_add_signal(struct morse_decoder *dec, state_t sig);
 void morse_flush_units(struct morse_decoder *dec);
-
-/* Timer routine */
-volatile extern state_t timer_event_signal_state;
-void timer_event_enable();
 
 #endif /* MORSE_H_ */

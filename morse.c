@@ -15,14 +15,14 @@ static inline void morse_flush_error(struct morse_decoder *dec)
 {
 	dec->morse.buf = 0;
 	dec->morse.len = 0;
-	dec->sym = '@';
+	dec->symb = '@';
 }
 
 static inline void morse_flush_space(struct morse_decoder *dec)
 {
 	dec->morse.buf = 0;
 	dec->morse.len = 0;
-	dec->sym = '_';
+	dec->symb = '_';
 }
 
 void morse_flush_units(struct morse_decoder *dec)
@@ -35,7 +35,7 @@ void morse_flush_units(struct morse_decoder *dec)
 
 	switch (code) {
 	#define MORSE_SYMBOL_CODE(symbol, code_mask, len_mask)	\
-	case ((uint8_t) code_mask) | ((uint8_t) len_mask): 	\
+	case (((uint8_t) code_mask) | ((uint8_t) len_mask)): 	\
 		result = symbol; 				\
 		break;
 	#include "morse_symbols.h"
@@ -44,7 +44,7 @@ void morse_flush_units(struct morse_decoder *dec)
 		result = '@';
 	}
 
-	dec->sym = result;
+	dec->symb = result;
 }
 
 void morse_flush_signal(struct morse_decoder *dec)

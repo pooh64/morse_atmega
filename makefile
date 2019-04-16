@@ -1,5 +1,5 @@
 CC_avr      := avr-gcc
-CFLAGS_avr  := -Wall -mmcu=atmega8535 -O2 -std=c99 -c
+CFLAGS_avr  := -Wall -mmcu=atmega8535 -O2 -std=c99 -g -c
 LDFLAGS_avr :=       -mmcu=atmega8535
 
 BUILD_DIR  := build
@@ -20,7 +20,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 
-MAIN_SRC := main.c morse.c timer_event.c
+MAIN_SRC := main.c morse.c timer_event.c led_matrix.c
 MAIN_OBJ := $(addprefix $(BUILD_DIR)/,$(MAIN_SRC:.c=.o))
 .PHONY: main
 main: $(BUILD_DIR)/main.hex
@@ -35,7 +35,7 @@ utest_draw: $(BUILD_DIR)/utest_draw.hex
 $(BUILD_DIR)/utest_draw.elf: $(UTEST_DRAW_OBJ)
 	$(CC_avr) $(LDFLAGS_avr) $(UTEST_DRAW_OBJ) -o $@
 
-UTEST_DECODE_SRC := utest_decode.c morse.c
+UTEST_DECODE_SRC := utest_decode.c morse.c led_matrix.c
 UTEST_DECODE_OBJ := $(addprefix $(BUILD_DIR)/,$(UTEST_DECODE_SRC:.c=.o))
 .PHONY: utest_decode
 utest_decode: $(BUILD_DIR)/utest_decode.hex
