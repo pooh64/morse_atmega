@@ -40,19 +40,20 @@ void morse_get_sym_matrix(struct morse_decoder *dec)
 
 void morse_draw_sym_matrix(struct morse_decoder *dec)
 {
-	DDRA = 0xff;
+	DDRA = 0xff; /* We need macro here */
 	DDRC = 0xff;
 
 	uint8_t *ptr = dec->sym_matrix + 6;
 
 	for (uint8_t i = 7; i != 0; --i, --ptr) {
-		PORTC = ~((uint8_t) 1 << (i - 1));
-		PORTA = *ptr;
-		_delay_loop_1(0xff);
+		MORSE_MATRIX_ROW_REG = ~((uint8_t) 1 << (i - 1));
+		MORSE_MATRIX_COL_REG = *ptr;
+		_delay_loop_1(MORSE_MATRIX_DRAW_DELAY);
 	}
 
-	PORTA = 0;
-	PORTC = 0;
+	MORSE_MATRIX_COL_REG = 0;
+	MORSE_MATRIX_ROW_REG = 0;
+
 	/* Maybe restore DDR */
 }
 
@@ -95,7 +96,7 @@ void morse_flush_units(struct morse_decoder *dec)
 void morse_flush_signal(struct morse_decoder *dec)
 {
 	if (dec->sig.state == STATE_ON) {
-		/* If it's too long */
+		/* Too long signals */
 		if (dec->morse.len > 4)
 			morse_flush_error(dec);
 

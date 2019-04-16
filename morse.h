@@ -40,6 +40,12 @@ typedef enum state_type {
 #define MORSE_SYMB_SPACE_MAX (MORSE_DOT_LEN * 5)
 /* between words */
 
+#define MORSE_MATRIX_ROW_REG    PORTC
+#define MORSE_MATRIX_COL_REG    PORTA
+#define MORSE_MATRIX_DRAW_DELAY 0xff
+
+#define SIGNAL_INDICATOR (PORTD && 0x80)
+
 struct morse_decoder {
 	struct signal_buffer {
 		state_t state;
