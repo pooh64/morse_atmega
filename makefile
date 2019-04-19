@@ -4,7 +4,7 @@ LDFLAGS_avr :=       -mmcu=atmega8535
 
 BUILD_DIR  := build
 
-all: main utest_led_matrix utest_morse
+all: main utest_led_matrix utest_morse utest_timer_event
 
 -include $(BUILD_DIR)/*.d
 
@@ -42,3 +42,11 @@ UTEST_MORSE_OBJ := $(addprefix $(BUILD_DIR)/,$(UTEST_MORSE_SRC:.c=.o))
 utest_morse: $(BUILD_DIR)/utest_morse.hex
 $(BUILD_DIR)/utest_morse.elf: $(UTEST_MORSE_OBJ)
 	$(CC_avr) $(LDFLAGS_avr) $(UTEST_MORSE_OBJ) -o $@
+
+
+UTEST_TIMER_EVENT_SRC := utest_timer_event.c timer_event.c led_matrix.c
+UTEST_TIMER_EVENT_OBJ := $(addprefix $(BUILD_DIR)/,$(UTEST_TIMER_EVENT_SRC:.c=.o))
+.PHONY: utest_timer_event
+utest_timer_event: $(BUILD_DIR)/utest_timer_event.hex
+$(BUILD_DIR)/utest_timer_event.elf: $(UTEST_TIMER_EVENT_OBJ)
+	$(CC_avr) $(LDFLAGS_avr) $(UTEST_TIMER_EVENT_OBJ) -o $@
