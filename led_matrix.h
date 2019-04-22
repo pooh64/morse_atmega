@@ -7,7 +7,7 @@
 
 #define MORSE_MATRIX_ROW_REG    PORTC
 #define MORSE_MATRIX_COL_REG    PORTA
-#define MORSE_MATRIX_DRAW_DELAY 0xff
+#define MORSE_MATRIX_DRAW_DELAY 0x80 /* * 28us */
 
 typedef struct led_matrix {
 	uint8_t arr[7];

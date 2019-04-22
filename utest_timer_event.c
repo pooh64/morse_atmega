@@ -12,22 +12,23 @@ int main()
 
 	while (1) {
 		state_t tmp_sig;
-		/* Atomic swap behaviour */
+		/* Atomic swap behavior */
 		ATOMIC_BLOCK(ATOMIC_FORCEON) {
 			tmp_sig = timer_event_signal_state;
 			timer_event_signal_state = STATE_NO_VALUE;
 		}
 
-		if (tmp_sig      == STATE_NO_VALUE)
+		if 	(tmp_sig == STATE_NO_VALUE)
 			led_matrix_set_from_symb(&mat, 'a');
 		else if (tmp_sig == STATE_ON)
 			led_matrix_set_from_symb(&mat, 'b');
 		else if (tmp_sig == STATE_OFF)
 			led_matrix_set_from_symb(&mat, 'c');
-		else 
+		else
 			led_matrix_set_from_symb(&mat, 'd');
 
 		/* Redraw */
-		led_matrix_draw(&mat);
+		for (uint8_t i = 35; i != 0; --i)
+			led_matrix_draw(&mat);
 	}
 }

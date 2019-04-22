@@ -16,7 +16,7 @@ int main()
 
 	while (1) {
 		state_t tmp_sig;
-		/* Atomic swap behaviour */
+		/* Atomic swap behavior */
 		ATOMIC_BLOCK(ATOMIC_FORCEON) {
 			tmp_sig = timer_event_signal_state;
 			timer_event_signal_state = STATE_NO_VALUE;
