@@ -5,9 +5,11 @@
 
 #include <avr/io.h>
 
-#define MORSE_MATRIX_ROW_REG    PORTC
-#define MORSE_MATRIX_COL_REG    PORTA
-#define MORSE_MATRIX_DRAW_DELAY 0x80 /* * 28us */
+#define MORSE_MATRIX_ROW_DIR	DDRC
+#define MORSE_MATRIX_COL_DIR	DDRA
+#define MORSE_MATRIX_ROW_REG	PORTC
+#define MORSE_MATRIX_COL_REG	PORTA
+#define MORSE_MATRIX_DRAW_DELAY 0x80 /* 0x01 = 28us */
 
 typedef struct led_matrix {
 	uint8_t arr[7];

@@ -50,3 +50,10 @@ UTEST_TIMER_EVENT_OBJ := $(addprefix $(BUILD_DIR)/,$(UTEST_TIMER_EVENT_SRC:.c=.o
 utest_timer_event: $(BUILD_DIR)/utest_timer_event.hex
 $(BUILD_DIR)/utest_timer_event.elf: $(UTEST_TIMER_EVENT_OBJ)
 	$(CC_avr) $(LDFLAGS_avr) $(UTEST_TIMER_EVENT_OBJ) -o $@
+
+UTEST_BUTTON_SRC := utest_button.c led_matrix.c
+UTEST_BUTTON_OBJ := $(addprefix $(BUILD_DIR)/,$(UTEST_BUTTON_SRC:.c=.o))
+.PHONY: utest_button
+utest_button: $(BUILD_DIR)/utest_button.hex
+$(BUILD_DIR)/utest_button.elf: $(UTEST_BUTTON_OBJ)
+	$(CC_avr) $(LDFLAGS_avr) $(UTEST_BUTTON_OBJ) -o $@

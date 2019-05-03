@@ -33,8 +33,8 @@ void led_matrix_set_from_symb(led_matrix_t *mat, uint8_t symb)
 
 void led_matrix_draw(led_matrix_t *mat)
 {
-	DDRA = 0xff; /* We need macro here */
-	DDRC = 0xff;
+	MORSE_MATRIX_ROW_DIR = 0xff;
+	MORSE_MATRIX_COL_DIR = 0xff;
 
 	uint8_t *ptr = &mat->arr[6];
 
@@ -46,6 +46,4 @@ void led_matrix_draw(led_matrix_t *mat)
 	}
 
 	MORSE_MATRIX_ROW_REG = 0;
-
-	/* Maybe restore DDR */
 }
