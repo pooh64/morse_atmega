@@ -8,7 +8,7 @@ void timer_event_enable()
 	TCNT0 = 0;
 	TCCR0 =   ((uint8_t) 1 << CS02) | ((uint8_t) 1 << CS00)
 		| ((uint8_t) 1 << WGM01);
-	OCR0 = 254;
+	OCR0 = 20;
 	TIMSK = (1 << OCIE0);
 
 	BUTTON_DIR_REG  &= !BUTTON_BITMASK; /* Set to input   */

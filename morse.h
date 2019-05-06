@@ -7,7 +7,7 @@
 
 /* Lenghts measured in timer ticks */
 #define SIGNAL_MIN_STABLE_LEN 2
-#define MORSE_DOT_LEN 5
+#define MORSE_DOT_LEN 10
 
 /* Dot */
 #define MORSE_DASH_MIN (MORSE_DOT_LEN * 2)

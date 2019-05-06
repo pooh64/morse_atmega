@@ -4,7 +4,7 @@ LDFLAGS_avr :=       -mmcu=atmega8535
 
 BUILD_DIR  := build
 
-all: main utest_led_matrix utest_morse utest_timer_event
+all: main utest_led_matrix utest_morse utest_timer_event utest_button
 
 -include $(BUILD_DIR)/*.d
 

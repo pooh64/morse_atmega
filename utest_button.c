@@ -9,7 +9,7 @@ int main()
 
 	DDRD  = 0x00;
 	PORTD = 0xff;
-	uint8_t mask = 0x10000000;
+	uint8_t mask = 0b10000000;
 
 	while (1) {
 		if 	(!(PIND & mask))
